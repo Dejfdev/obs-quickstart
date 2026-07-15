@@ -1,0 +1,2 @@
+obsws-python>=1.6.0
+speedtest-cli>=2.1.0

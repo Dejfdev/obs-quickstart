@@ -1,0 +1,1 @@
+# obs-quickstart: Plug-and-Play OBS Studio auto-configurator

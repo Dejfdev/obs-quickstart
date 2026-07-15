@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "obs-quickstart"
+version = "1.0.0"
+description = "Plug-and-Play OBS Studio auto-configurator"
+authors = [{name = "Hermes Agent"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "obsws-python>=1.6.0",
+]
+
+[project.optional-dependencies]
+speedtest = ["speedtest-cli>=2.1.0"]
+
+[project.scripts]
+obs-quickstart = "obs_quickstart.main:cli"
+
+[tool.setuptools.packages.find]
+include = ["obs_quickstart*"]
