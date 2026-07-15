@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 obs-quickstart — Main CLI wizard.
 
@@ -10,6 +12,7 @@ Interactive wizard that:
 """
 
 import argparse
+import getpass
 import logging
 import sys
 import time
@@ -189,6 +192,12 @@ def wizard(host: str = "localhost",
 
     # ─── Step 1: Connect to OBS ──────────────────────────────
     obs = check_obs_connection(host, port, password)
+    if obs is None and not password and not no_interactive:
+        password = getpass.getpass(
+            f"{Colors.CYAN}❓ OBS WebSocket password (leave blank to cancel): {Colors.RESET}"
+        ).strip()
+        if password:
+            obs = check_obs_connection(host, port, password)
     if obs is None:
         cprint("\n  ❌ Cannot continue without OBS connection.", Colors.RED)
         cprint("  Start OBS Studio, enable WebSocket (Tools → WebSocket Server Settings),", Colors.YELLOW)
@@ -249,10 +258,11 @@ def wizard(host: str = "localhost",
                 choices=["twitch", "youtube", "kick", "custom"]
             )
             if platform == "custom":
-                stream_key = prompt("Stream key / URL:")
+                stream_key = getpass.getpass(f"{Colors.CYAN}❓ Stream key / URL: {Colors.RESET}")
             else:
-                stream_key = prompt("Stream key (leave blank to set later):",
-                                    default="")
+                stream_key = getpass.getpass(
+                    f"{Colors.CYAN}❓ Stream key (leave blank to set later): {Colors.RESET}"
+                ).strip()
         else:
             platform = ""
             stream_key = ""
@@ -281,7 +291,7 @@ def wizard(host: str = "localhost",
     # ─── Step 7: Apply settings ──────────────────────────────
     cprint("\n  ⚙️  Applying settings to OBS...", Colors.BOLD)
 
-    if not settings_only:
+    if not scenes_only:
         cprint("  Configuring OBS settings...", Colors.DIM)
         if configure_obs_settings(obs, settings):
             cprint("  ✅ OBS settings configured!", Colors.GREEN)
@@ -295,7 +305,7 @@ def wizard(host: str = "localhost",
         else:
             cprint("  ⚠️  Stream could not be configured.", Colors.YELLOW)
 
-    if not settings_only:
+    if not scenes_only:
         cprint("  Configuring hotkeys...", Colors.DIM)
         configure_hotkeys(obs)
 
@@ -330,7 +340,12 @@ def wizard(host: str = "localhost",
     line()
     cprint("\n  🎉  obs-quickstart setup complete!", Colors.GREEN, bold=True)
     cprint("\n  📋 What was done:", Colors.BOLD)
-    if not settings_only:
+    if settings_only:
+        print("     ✅ Settings applied (no scenes created)")
+    elif scenes_only:
+        print("     ✅ 5 scenes created (settings unchanged)")
+        print("     ✅ Transitions and audio sources configured")
+    else:
         print("     ✅ Optimal settings applied (video, audio, output)")
         if use_case in ("streaming", "both") and stream_key:
             print("     ✅ Stream configured")
@@ -338,9 +353,6 @@ def wizard(host: str = "localhost",
         print("     ✅ 5 scenes created: Starting Soon, Gameplay, Just Chatting, BRB, Ending")
         print("     ✅ Transitions set (Fade)")
         print("     ✅ Audio sources configured")
-    else:
-        print("     ✅ Settings applied (no scenes created)")
-
     cprint("\n  📝 Next steps:", Colors.BOLD)
     print("     1. In OBS, go to each scene and verify sources")
     print("     2. If you have a camera, select the correct device")
@@ -370,10 +382,11 @@ Examples:
                         help="OBS WebSocket port (default: 4455)")
     parser.add_argument("--password", default="",
                         help="OBS WebSocket password")
-    parser.add_argument("--settings-only", action="store_true",
-                        help="Only apply settings, skip scene creation")
-    parser.add_argument("--scenes-only", action="store_true",
-                        help="Only create scenes, skip settings")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--settings-only", action="store_true",
+                      help="Only apply settings, skip scene creation")
+    mode.add_argument("--scenes-only", action="store_true",
+                      help="Only create scenes, skip settings")
     parser.add_argument("--no-interactive", action="store_true",
                         help="Run without prompts (use defaults)")
     parser.add_argument("--verbose", "-v", action="store_true",

@@ -3,7 +3,7 @@
   <img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows">
   <img src="https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=apple&logoColor=white" alt="macOS">
   <img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux">
-  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.9+">
 </p>
 
 # 🎬 obs-quickstart
@@ -22,7 +22,7 @@
 | 2 | 🖥️ **Skanuje sprzęt** — GPU, CPU, RAM, enkodery | Tak |
 | 3 | 🌐 **Testuje internet** — dobiera bitrate pod Twoje łącze | Tak |
 | 4 | ⚙️ **Konfiguruje OBS** — rozdzielczość, FPS, encoder, audio | ✅ |
-| 5 | 🎬 **Tworzy 5 gotowych scen** z źródłami | ✅ |
+| 5 | 🎬 **Tworzy 5 gotowych scen** ze źródłami | ✅ |
 | 6 | 🔄 **Ustawia przejścia** (Fade) i hotkeye (F1-F7) | ✅ |
 | 7 | 🎤 **Konfiguruje audio** — mikrofon (z Noise Gate), desktop audio | ✅ |
 
@@ -34,7 +34,7 @@
 
 ```
 ┌─────────────────────────────────┐
-│  🟢 Starting Soon               │  ← tło + napis "STARTING SOON"
+│  🟢 Starting Soon               │  ← zapętlona animacja HyperFrames
 ├─────────────────────────────────┤
 │  🎮 Gameplay                    │  ← Game Capture + kamera (PIP) + audio
 │         ┌──────┐                │
@@ -43,9 +43,9 @@
 ├─────────────────────────────────┤
 │  💬 Just Chatting               │  ← kamera na pełnym ekranie
 ├─────────────────────────────────┤
-│  🔴 Be Right Back               │  ← "🔴 BE RIGHT BACK"
+│  🔴 Be Right Back               │  ← zapętlona animacja intermission
 ├─────────────────────────────────┤
-│  🚀 Stream Ending               │  ← "STREAM ENDED — Thanks!"
+│  🚀 Stream Ending               │  ← animowane zakończenie transmisji
 └─────────────────────────────────┘
 ```
 
@@ -56,31 +56,34 @@
 ### Wymagania
 
 - **OBS Studio 28+** (z wbudowanym WebSocket)
-- **Python 3.10+**
+- **Python 3.9+**
 - WebSocket w OBS: **Tools → WebSocket Server Settings → Enable WebSocket server**
 
 ### Instalacja
 
 **Windows:**
 ```batch
-git clone https://github.com/ak100kk/obs-quickstart.git
-cd obs-quickstart
+git clone https://github.com/ak100kk/obs-quickstart-tmp.git
+cd obs-quickstart-tmp
 setup.bat
 python -m obs_quickstart.main
 ```
 
 **macOS / Linux:**
 ```bash
-git clone https://github.com/ak100kk/obs-quickstart.git
-cd obs-quickstart
+git clone https://github.com/ak100kk/obs-quickstart-tmp.git
+cd obs-quickstart-tmp
 bash setup.sh
 python3 -m obs_quickstart.main
 ```
 
+Jeżeli uwierzytelnianie WebSocket jest włączone, kreator bezpiecznie poprosi
+o hasło OBS. W trybie `--no-interactive` podaj je przez `--password`.
+
 **Albo ręcznie (dowolna platforma):**
 ```bash
-git clone https://github.com/ak100kk/obs-quickstart.git
-cd obs-quickstart
+git clone https://github.com/ak100kk/obs-quickstart-tmp.git
+cd obs-quickstart-tmp
 pip install obsws-python
 pip install speedtest-cli   # opcjonalnie, dla testu łącza
 python3 -m obs_quickstart.main
@@ -164,6 +167,11 @@ Narzędzie używa **OBS WebSocket API v5** (wbudowanego w OBS 28+) do sterowania
 3. `obs_quickstart/scene_builder.py` — tworzy sceny, źródła, przejścia, filtry audio
 4. `obs_quickstart/main.py` — interaktywny wizard CLI
 
+Animowane ekrany Starting Soon, Be Right Back i Stream Ending są tworzone
+w otwartym frameworku [HyperFrames](https://github.com/heygen-com/hyperframes),
+renderowane do MP4 i dodawane do OBS jako zapętlone źródła multimedialne.
+Edytowalne kompozycje źródłowe znajdują się w katalogu `videos/`.
+
 Wszystkie operacje są wykonywane przez API — nie ma modyfikacji plików konfiguracyjnych OBS "na surowo".
 
 ---
@@ -181,8 +189,8 @@ Wszystkie operacje są wykonywane przez API — nie ma modyfikacji plików konfi
 ## 🧑‍💻 Rozwój
 
 ```bash
-git clone https://github.com/ak100kk/obs-quickstart.git
-cd obs-quickstart
+git clone https://github.com/ak100kk/obs-quickstart-tmp.git
+cd obs-quickstart-tmp
 pip install -e .
 # Teraz 'obs-quickstart' jest dostępne jako komenda
 obs-quickstart

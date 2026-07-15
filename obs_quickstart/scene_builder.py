@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 obs-quickstart — Scene builder module.
 
@@ -7,6 +9,7 @@ audio devices via the WebSocket API.
 
 import logging
 import time
+from pathlib import Path
 from typing import Optional
 
 logger = logging.getLogger("obs-quickstart")
@@ -17,18 +20,11 @@ SCENE_CONFIG = [
         "name": "🟢 Starting Soon",
         "index": 0,
         "sources": [
-            {"kind": "color_source_v2", "name": "Background",
-             "settings": {"color": 0x1a1a2e, "width": 1920, "height": 1080},
-             "position": {"x": 0, "y": 0}},
-            {"kind": "text_gdiplus_v2", "name": "Starting Soon Text",
-             "settings": {"text": "STARTING SOON",
-                          "font": {"face": "Arial", "size": 72, "bold": True},
-                          "color": 0xffffff, "align": "center",
-                          "vertical_align": "center",
-                          "outline": True, "outline_color": 0x000000,
-                          "outline_size": 4},
-             "position": {"x": 960, "y": 540, "alignment": 5},
-             "filters": []},
+            {"kind": "ffmpeg_source", "name": "Starting Soon Animation",
+             "asset_file": "starting-soon.mp4",
+             "settings": {"looping": True, "restart_on_activate": True,
+                          "close_when_inactive": False},
+             "position": {"x": 0, "y": 0, "width": 1920, "height": 1080}},
         ],
     },
     {
@@ -60,7 +56,7 @@ SCENE_CONFIG = [
         "name": "💬 Just Chatting",
         "index": 2,
         "sources": [
-            {"kind": "color_source_v2", "name": "Background",
+            {"kind": "color_source_v3", "name": "Just Chatting Background",
              "settings": {"color": 0x1a1a2e, "width": 1920, "height": 1080},
              "position": {"x": 0, "y": 0}},
         ],
@@ -69,36 +65,22 @@ SCENE_CONFIG = [
         "name": "🔴 Be Right Back",
         "index": 3,
         "sources": [
-            {"kind": "color_source_v2", "name": "Background",
-             "settings": {"color": 0x000000, "width": 1920, "height": 1080},
-             "position": {"x": 0, "y": 0}},
-            {"kind": "text_gdiplus_v2", "name": "BRB Text",
-             "settings": {"text": "🔴 BE RIGHT BACK",
-                          "font": {"face": "Arial", "size": 72, "bold": True},
-                          "color": 0xff4444, "align": "center",
-                          "vertical_align": "center",
-                          "outline": True, "outline_color": 0x000000,
-                          "outline_size": 4},
-             "position": {"x": 960, "y": 540, "alignment": 5},
-             "filters": []},
+            {"kind": "ffmpeg_source", "name": "BRB Animation",
+             "asset_file": "be-right-back.mp4",
+             "settings": {"looping": True, "restart_on_activate": True,
+                          "close_when_inactive": False},
+             "position": {"x": 0, "y": 0, "width": 1920, "height": 1080}},
         ],
     },
     {
         "name": "🚀 Stream Ending",
         "index": 4,
         "sources": [
-            {"kind": "color_source_v2", "name": "Background",
-             "settings": {"color": 0x1a1a2e, "width": 1920, "height": 1080},
-             "position": {"x": 0, "y": 0}},
-            {"kind": "text_gdiplus_v2", "name": "Ending Text",
-             "settings": {"text": "STREAM ENDED\nThanks for watching! 🎉 ",
-                          "font": {"face": "Arial", "size": 60, "bold": True},
-                          "color": 0xffffff, "align": "center",
-                          "vertical_align": "center",
-                          "outline": True, "outline_color": 0x000000,
-                          "outline_size": 4},
-             "position": {"x": 960, "y": 540, "alignment": 5},
-             "filters": []},
+            {"kind": "ffmpeg_source", "name": "Stream Ending Animation",
+             "asset_file": "stream-ending.mp4",
+             "settings": {"looping": True, "restart_on_activate": True,
+                          "close_when_inactive": False},
+             "position": {"x": 0, "y": 0, "width": 1920, "height": 1080}},
         ],
     },
 ]
@@ -182,11 +164,19 @@ def create_scene_collection(obs, settings: dict,
         scene_name = scene_cfg["name"]
         sources = scene_cfg["sources"]
         is_gameplay = "Gameplay" in scene_name
+        is_just_chatting = "Just Chatting" in scene_name
 
         for source_cfg in sources:
             kind = source_cfg["kind"]
             sname = source_cfg["name"]
             src_settings = dict(source_cfg["settings"])
+
+            if source_cfg.get("asset_file"):
+                asset_path = Path(__file__).parent / "assets" / source_cfg["asset_file"]
+                if not asset_path.is_file():
+                    logger.warning(f"    Animation asset missing: {asset_path}")
+                    continue
+                src_settings["local_file"] = str(asset_path.resolve())
 
             # Platform-adapt source kinds
             adapted_kind = _get_source_kind_for_platform(kind, is_macos, is_linux)
@@ -228,11 +218,11 @@ def create_scene_collection(obs, settings: dict,
                 # Create audio capture source
                 try:
                     obs.create_input(
-                        scene_name=scene_name,
-                        input_name=sname,
-                        input_kind=adapted_kind,
-                        input_settings=src_settings,
-                        scene_item_enabled=True,
+                        sceneName=scene_name,
+                        inputName=sname,
+                        inputKind=adapted_kind,
+                        inputSettings=src_settings,
+                        sceneItemEnabled=True,
                     )
                     logger.info(f"    Created: {sname} ({adapted_kind}) in {scene_name}")
                 except Exception as e:
@@ -242,25 +232,26 @@ def create_scene_collection(obs, settings: dict,
             # Create regular source
             try:
                 # For color sources and text, use platform-appropriate sizes
-                if kind == "color_source_v2":
+                if kind in ("color_source_v2", "color_source_v3"):
                     src_settings["width"] = base_w
                     src_settings["height"] = base_h
 
                 obs.create_input(
-                    scene_name=scene_name,
-                    input_name=sname,
-                    input_kind=adapted_kind,
-                    input_settings=src_settings,
-                    scene_item_enabled=True,
+                    sceneName=scene_name,
+                    inputName=sname,
+                    inputKind=adapted_kind,
+                    inputSettings=src_settings,
+                    sceneItemEnabled=True,
                 )
                 logger.info(f"    Created: {sname} ({adapted_kind}) → {scene_name}")
             except Exception as e:
                 logger.warning(f"    Failed to create {sname} in '{scene_name}': {e}")
 
         # --- Step 3: Add webcam to Gameplay and Just Chatting scenes ---
-        if is_gameplay and video_devices:
+        if (is_gameplay or is_just_chatting) and video_devices:
             _add_webcam_source(obs, scene_name, video_devices,
-                               base_w, base_h, is_macos, is_linux)
+                               base_w, base_h, is_macos, is_linux,
+                               full_screen=is_just_chatting)
 
         # --- Step 4: Apply position/size to color and text sources ---
         _arrange_source_positions(obs, scene_name, sources,
@@ -275,14 +266,7 @@ def create_scene_collection(obs, settings: dict,
                 except Exception as e:
                     logger.debug(f"    Filter skip: {e}")
 
-    # --- Step 6: Set scene order ---
-    try:
-        obs.set_scene_order(scene_names)
-        logger.info("  Scene order set")
-    except Exception as e:
-        logger.warning(f"  Could not set scene order: {e}")
-
-    # --- Step 7: Set current scene to first one ---
+    # --- Step 6: Set current scene to first one ---
     if scene_names:
         try:
             obs.set_current_program_scene(scene_names[0])
@@ -296,7 +280,8 @@ def create_scene_collection(obs, settings: dict,
 
 def _add_webcam_source(obs, scene_name: str, video_devices: list[str],
                        base_w: int, base_h: int,
-                       is_macos: bool, is_linux: bool):
+                       is_macos: bool, is_linux: bool,
+                       full_screen: bool = False):
     """Add a webcam source to a scene with proper positioning."""
     cam_kind = _get_source_kind_for_platform("video_capture",
                                              is_macos, is_linux)
@@ -320,11 +305,11 @@ def _add_webcam_source(obs, scene_name: str, video_devices: list[str],
 
         if not exists:
             obs.create_input(
-                scene_name=scene_name,
-                input_name=display_name,
-                input_kind=cam_kind,
-                input_settings={},
-                scene_item_enabled=True,
+                sceneName=scene_name,
+                inputName=display_name,
+                inputKind=cam_kind,
+                inputSettings={},
+                sceneItemEnabled=True,
             )
         else:
             # Add as reference
@@ -334,11 +319,14 @@ def _add_webcam_source(obs, scene_name: str, video_devices: list[str],
             except Exception:
                 pass
 
-        # Position camera in bottom-right corner (PIP)
-        # 480x270 = ~25% of 1080p
-        cam_w, cam_h = 480, 270
-        cam_x = base_w - cam_w - 30  # 30px margin
-        cam_y = base_h - cam_h - 30
+        if full_screen:
+            cam_w, cam_h = base_w, base_h
+            cam_x, cam_y = 0, 0
+        else:
+            # 480x270 = ~25% of a 1080p canvas.
+            cam_w, cam_h = 480, 270
+            cam_x = base_w - cam_w - 30
+            cam_y = base_h - cam_h - 30
 
         # Get scene item ID and set transform
         scene_items = obs.get_scene_item_list(scene_name)
@@ -347,14 +335,13 @@ def _add_webcam_source(obs, scene_name: str, video_devices: list[str],
                 item_id = item.get("sceneItemId")
                 obs.set_scene_item_transform(
                     scene_name=scene_name,
-                    scene_item_id=item_id,
+                    item_id=item_id,
                     transform={
                         "positionX": cam_x,
                         "positionY": cam_y,
-                        "width": cam_w,
-                        "height": cam_h,
-                        "scaleX": cam_w / base_w,
-                        "scaleY": cam_h / base_h,
+                        "boundsType": "OBS_BOUNDS_SCALE_INNER",
+                        "boundsWidth": cam_w,
+                        "boundsHeight": cam_h,
                     }
                 )
                 break
@@ -366,11 +353,11 @@ def _add_webcam_source(obs, scene_name: str, video_devices: list[str],
         # Fallback: add generic video capture
         try:
             obs.create_input(
-                scene_name=scene_name,
-                input_name="Camera",
-                input_kind=cam_kind,
-                input_settings={},
-                scene_item_enabled=True,
+                sceneName=scene_name,
+                inputName="Camera",
+                inputKind=cam_kind,
+                inputSettings={},
+                sceneItemEnabled=True,
             )
         except Exception:
             pass
@@ -404,10 +391,9 @@ def _arrange_source_positions(obs, scene_name: str, sources: list,
             transform["positionX"] = pos["x"]
             transform["positionY"] = pos["y"]
         if "width" in pos and "height" in pos:
-            transform["width"] = pos["width"]
-            transform["height"] = pos["height"]
-            transform["scaleX"] = pos["width"] / base_w if base_w else 1
-            transform["scaleY"] = pos["height"] / base_h if base_h else 1
+            transform["boundsType"] = "OBS_BOUNDS_STRETCH"
+            transform["boundsWidth"] = pos["width"]
+            transform["boundsHeight"] = pos["height"]
         if "alignment" in pos:
             transform["alignment"] = pos["alignment"]
 
@@ -415,7 +401,7 @@ def _arrange_source_positions(obs, scene_name: str, sources: list,
             try:
                 obs.set_scene_item_transform(
                     scene_name=scene_name,
-                    scene_item_id=item_id,
+                    item_id=item_id,
                     transform=transform,
                 )
             except Exception:
@@ -470,28 +456,10 @@ def setup_transitions(obs, base_resolution: tuple[int, int] = (1920, 1080)) -> b
             )
 
             if not has_fade:
-                # Create fade transition
-                obs.create_scene_transition(
-                    transition_name="Fade",
-                    transition_kind="fade_transition",
-                    transition_settings={
-                        "transition_points": [
-                            {"x": 0, "y": 0},
-                            {"x": 1, "y": 1},
-                        ]
-                    },
-                )
+                logger.warning("Fade transition is not available in this OBS profile")
+                return False
 
-            # Set Fade as current scene transition
-            # This is done via SetCurrentSceneTransition
-            try:
-                obs.set_current_scene_transition("Fade")
-            except Exception:
-                # Try SetCurrentTransition
-                try:
-                    obs.set_current_transition("Fade")
-                except Exception:
-                    pass
+            obs.set_current_scene_transition("Fade")
 
             logger.info("Transition set: Fade")
         except Exception as e:
@@ -540,14 +508,9 @@ def configure_audio_devices(obs) -> bool:
                 else:
                     kind = audio_kind
 
-                obs.create_input(
-                    scene_name="",
-                    input_name=audio_name,
-                    input_kind=kind,
-                    input_settings={},
-                    scene_item_enabled=True,
-                )
-                logger.info(f"Audio source created: {audio_name}")
+                # Inputs must belong to a scene. Gameplay creates these sources;
+                # this function only reports whether defaults already exist.
+                logger.info(f"Audio source will be created in Gameplay: {audio_name}")
         except Exception as e:
             logger.debug(f"Audio '{audio_name}': {e}")
 

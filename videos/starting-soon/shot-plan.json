@@ -1,0 +1,146 @@
+{
+  "category": "kinetic-type",
+  "duration_s": 8,
+  "fps": 60,
+  "canvas": {
+    "w": 1920,
+    "h": 1080,
+    "aspect": "16:9"
+  },
+  "style": "Premium creator broadcast opener: editorial Swiss-grid precision crossed with a restrained gaming HUD. Deep navy field, warm paper-white type, vivid lime signal accents, and one coral counterpoint. Asymmetric composition with a left-weighted typographic hero and a right-side signal target as the second focal point; crisp, energetic, never neon-cliche.",
+  "palette": [
+    "#07111F",
+    "#F4F1E8",
+    "#B7F34A",
+    "#FF5C5C"
+  ],
+  "font": "IBM Plex Sans, Space Grotesk, Arial, sans-serif",
+  "beats": [0, 0.18, 0.56, 1.1, 1.72, 2.2, 3.4, 4.8, 6.3, 6.78, 7.42, 8],
+  "export": "mp4",
+  "asset_needs": [],
+  "block": "caption-kinetic-slam",
+  "customize": {
+    "copy": {
+      "headline": "STARTING SOON",
+      "subheadline": "Stream begins in a moment",
+      "eyebrow": "LIVE SIGNAL / 01",
+      "status": "CONNECTING"
+    },
+    "layout": {
+      "safe_area": 72,
+      "headline_anchor": "left 150px, top 350px",
+      "headline_width": "62%",
+      "subheadline_anchor": "left 158px, top 650px",
+      "secondary_focal_point": "signal reticle centered near x=1590, y=360",
+      "composition": "Strong left text mass balanced by a smaller animated circular signal target in the upper-right; open negative-space lane through center-right; no centered stack. Headline spans 60-70% of frame width at 150-176px, uppercase, weight 700-800; subheadline 34-40px."
+    },
+    "elements": [
+      {
+        "id": "ss-grid",
+        "role": "background texture",
+        "look": "navy-on-navy 96px technical grid at 16% opacity"
+      },
+      {
+        "id": "ss-lime-glow",
+        "role": "background atmosphere",
+        "look": "localized lime radial bloom behind the signal target at 20% opacity"
+      },
+      {
+        "id": "ss-ghost-type",
+        "role": "midground depth",
+        "look": "oversized cropped 00:08 glyphs along the lower-right edge at 12% opacity"
+      },
+      {
+        "id": "ss-eyebrow",
+        "role": "metadata focal lead-in",
+        "look": "lime monospaced-style uppercase label with two registration ticks"
+      },
+      {
+        "id": "ss-headline",
+        "role": "primary focal point",
+        "look": "warm off-white two-line-capable hero type with SOON in lime"
+      },
+      {
+        "id": "ss-subheadline",
+        "role": "supporting copy",
+        "look": "warm off-white at 78% opacity"
+      },
+      {
+        "id": "ss-signal-reticle",
+        "role": "secondary focal point",
+        "look": "three incomplete lime rings, crosshair, and one coral locator dot"
+      },
+      {
+        "id": "ss-status-chip",
+        "role": "foreground status",
+        "look": "coral capsule reading CONNECTING, offset below the reticle"
+      },
+      {
+        "id": "ss-rule",
+        "role": "structural path",
+        "look": "2px lime rule running from headline baseline toward the reticle"
+      },
+      {
+        "id": "ss-corner-data",
+        "role": "foreground metadata",
+        "look": "bottom-left 60 FPS / 1920x1080 readout and bottom-right four-step signal bars"
+      }
+    ],
+    "motion_system": {
+      "dominant_motif": "Signal acquisition: horizontal scans and concentric lock-on motion progressively stabilize the typography.",
+      "rules": [
+        "kinetic-beat-slam",
+        "svg-path-draw",
+        "ambient-glow-bloom",
+        "sine-wave-loop"
+      ],
+      "blueprint": "kinetic-type-beats",
+      "build": "0.00-2.20s: grid and glow wake first; a lime scan rule draws left-to-right; eyebrow snaps in; STARTING and SOON arrive from opposite x directions with brief velocity streaks and lock onto a common baseline; reticle rings draw in staggered arcs and the coral locator dot spring-pops at lock.",
+      "breathe": "2.20-6.60s: headline remains fully legible; reticle rotates only 12 degrees while rings breathe 1.00-1.035; lime glow blooms softly; the status chip toggles CONNECTING to SIGNAL READY by a deterministic hard text swap at 4.80s; grid drifts 18px diagonally over the phase.",
+      "resolve": "6.60-8.00s: status returns to CONNECTING, locator dot traces back to its starting bearing, ring rotation unwinds, ghost counter returns to 00:08, and the headline makes a tiny 1.015-to-1 settle. End frame matches the opening field and decorative positions for a seamless OBS loop; hero copy remains visible through the boundary.",
+      "easing": "power4.out for hero impacts, expo.out for rule/reticle assembly, sine.inOut for bounded ambience, power2.inOut for loop reset",
+      "determinism": "All looping motion is finite on the single paused GSAP timeline; no random values, clocks, infinite repeats, or layout-property tweens."
+    },
+    "contrast": "#F4F1E8 and #B7F34A on #07111F for primary copy; coral is limited to status and locator accents, never small body copy."
+  },
+  "content": {
+    "scenes": [
+      {
+        "id": "ss-build",
+        "start": 0,
+        "end": 2.2,
+        "text": "STARTING SOON",
+        "emphasis_words": [
+          "SOON"
+        ],
+        "emotion": "anticipation becoming confidence",
+        "motion": "Opposed horizontal kinetic slam, scan-line draw, and concentric signal lock assemble the frame.",
+        "beats": [0.18, 0.56, 1.1, 1.72, 2.2]
+      },
+      {
+        "id": "ss-breathe",
+        "start": 2.2,
+        "end": 6.6,
+        "text": "Stream begins in a moment",
+        "emphasis_words": [
+          "moment"
+        ],
+        "emotion": "calm readiness",
+        "motion": "Locked hero hold with bounded reticle orbit, glow bloom, micro-drift, and one status state change.",
+        "beats": [3.4, 4.8, 6.3]
+      },
+      {
+        "id": "ss-resolve",
+        "start": 6.6,
+        "end": 8,
+        "text": "STARTING SOON",
+        "emphasis_words": [
+          "SOON"
+        ],
+        "emotion": "poised continuity",
+        "motion": "Signal geometry and background drift precisely unwind to their opening state while copy holds.",
+        "beats": [6.78, 7.42, 8]
+      }
+    ]
+  }
+}

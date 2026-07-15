@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 obs-quickstart — Hardware detection module.
 
@@ -125,33 +127,9 @@ def detect_obs_encoders(obs) -> HardwareInfo:
     info.is_macos = sys.platform == "darwin"
     info.is_linux = sys.platform.startswith("linux")
 
-    try:
-        resp = obs.get_special_inputs()
-        info.encoders = resp.input_kinds if hasattr(resp, 'input_kinds') else []
-    except Exception:
-        pass
-
-    # Enumerate encoder types via OBS
-    # We probe for specific encoder IDs
-    nvenc_ids = ["ffmpeg_nvenc", "nvidia_nvenc", "jim_nvenc"]
-    amf_ids = ["amd_amf_h264", "h264_texture_amf", "amd_amf_hevc"]
-    qsv_ids = ["obs_qsv11", "intel_qsv_h264"]
-    apple_ids = ["com.apple.videotoolbox.videoencoder.ave.avc",
-                 "com.apple.videotoolbox.videoencoder.ave.hevc",
-                 "apple_vt_h264", "apple_vt_hevc"]
-
-    # We can't directly enumerate all encoder types via the API,
-    # but we can probe via get_input_kind_list
-    try:
-        kinds = obs.get_input_kind_list()
-        all_kinds = kinds.input_kinds if hasattr(kinds, 'input_kinds') else []
-    except Exception:
-        all_kinds = []
-
-    info.has_nvenc = any(eid in all_kinds for eid in nvenc_ids)
-    info.has_amf = any(eid in all_kinds for eid in amf_ids)
-    info.has_qsv = any(eid in all_kinds for eid in qsv_ids)
-    info.has_apple_vt = any(eid in all_kinds for eid in apple_ids)
+    # OBS WebSocket v5 does not expose an encoder-kind list. VideoToolbox is
+    # bundled with OBS on macOS; other platforms safely fall back to x264.
+    info.has_apple_vt = info.is_macos
 
     # GPU vendor inference
     if info.has_nvenc:

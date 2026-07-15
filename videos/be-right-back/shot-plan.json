@@ -1,0 +1,147 @@
+{
+  "category": "kinetic-type",
+  "duration_s": 8,
+  "fps": 60,
+  "canvas": {
+    "w": 1920,
+    "h": 1080,
+    "aspect": "16:9"
+  },
+  "style": "Premium broadcast intermission card with mechanical editorial rhythm: deep navy, warm off-white, vivid lime, and coral. A bold pause symbol owns the left third while the headline sits low and right; fast rails contrast with a composed central hold. Gaming energy without generic neon or dashboard-card clutter.",
+  "palette": [
+    "#07111F",
+    "#F4F1E8",
+    "#B7F34A",
+    "#FF5C5C"
+  ],
+  "font": "Space Grotesk, IBM Plex Sans, Arial, sans-serif",
+  "beats": [0, 0.12, 0.48, 0.92, 1.46, 2.08, 2.5, 3.8, 5.05, 6.25, 6.72, 7.35, 8],
+  "export": "mp4",
+  "asset_needs": [],
+  "block": "caption-editorial-emphasis",
+  "customize": {
+    "copy": {
+      "headline": "BE RIGHT BACK",
+      "subheadline": "Taking a short break",
+      "eyebrow": "INTERMISSION / HOLD",
+      "status": "BACK SHORTLY"
+    },
+    "layout": {
+      "safe_area": 72,
+      "headline_anchor": "left 770px, top 500px",
+      "headline_width": "54%",
+      "subheadline_anchor": "left 784px, top 760px",
+      "secondary_focal_point": "oversized coral pause bars centered near x=360, y=430",
+      "composition": "Deliberately split and asymmetric: tactile pause monolith in the upper-left; right-lower headline with RIGHT isolated in lime; a diagonal corridor of moving rails connects them. Headline 132-154px, uppercase, 700-800; subheadline 36-42px."
+    },
+    "elements": [
+      {
+        "id": "brb-field",
+        "role": "background texture",
+        "look": "deep navy with offset horizontal track lines at 14% opacity"
+      },
+      {
+        "id": "brb-coral-bloom",
+        "role": "background atmosphere",
+        "look": "localized coral radial bloom behind pause monolith at 18% opacity"
+      },
+      {
+        "id": "brb-ghost-marquee",
+        "role": "midground depth",
+        "look": "cropped repeated BACK / BACK / BACK strip crossing the top edge at 12% opacity"
+      },
+      {
+        "id": "brb-pause-frame",
+        "role": "secondary focal enclosure",
+        "look": "off-white 320px square outline, slightly rotated -4 degrees"
+      },
+      {
+        "id": "brb-pause-bars",
+        "role": "secondary focal point",
+        "look": "two thick coral vertical bars with lime end caps"
+      },
+      {
+        "id": "brb-eyebrow",
+        "role": "metadata",
+        "look": "small lime INTERMISSION / HOLD label aligned to headline cap line"
+      },
+      {
+        "id": "brb-headline",
+        "role": "primary focal point",
+        "look": "off-white hero type with RIGHT filled lime and BACK underlined coral"
+      },
+      {
+        "id": "brb-subheadline",
+        "role": "supporting copy",
+        "look": "warm off-white at 78% opacity"
+      },
+      {
+        "id": "brb-speed-rails",
+        "role": "structural motion path",
+        "look": "three unequal lime/off-white rules traversing the frame at different y positions"
+      },
+      {
+        "id": "brb-corner-data",
+        "role": "foreground detail",
+        "look": "top-right BACK SHORTLY chip plus bottom-left 02 / PAUSED and bottom-right three coral registration marks"
+      }
+    ],
+    "motion_system": {
+      "dominant_motif": "Pause and displacement: the coral pause bars physically push a typographic lane open, then the rails keep time while the message rests.",
+      "rules": [
+        "reactive-displacement",
+        "kinetic-beat-slam",
+        "press-release-spring",
+        "sine-wave-loop"
+      ],
+      "blueprint": "ticker-takeover adapted as a pause-symbol takeover",
+      "build": "0.00-2.50s: three rails whip right-to-left; the outlined square drops in with a slight -9-to--4 degree settle; pause bars stamp down one after the other and physically displace ghost BACK text; BE, RIGHT, BACK snap in as separate blocks from alternating y directions, with RIGHT arriving last in lime.",
+      "breathe": "2.50-6.55s: hero copy stays readable; pause bars compress together by 10px and release every 1.35s as a bounded tactile pulse; speed rails continue short finite passes; ghost marquee drifts left while the coral bloom slowly breathes. At 5.05s the coral underline wipes beneath BACK as the only pattern interrupt.",
+      "resolve": "6.55-8.00s: rails reverse along their exact tracks, pause bars lift and return to the opening edge positions, square rotation unwinds, and marquee offset returns to zero. Headline uses a quick masked fold then returns to its initial hidden edge state on the last frames, making frame 480 connect to frame 0 without a visual jump.",
+      "easing": "power3.out for rail whips, back.out(1.55) for stamps, power2.inOut for displacement, sine.inOut for bounded pulse and reset",
+      "determinism": "Finite timeline passes only; all rail offsets and pause compression are predeclared constants; no infinite repeat, random, runtime clock, or layout tween."
+    },
+    "contrast": "Warm off-white and lime carry all readable text on navy; coral is used in large pause geometry and underline only."
+  },
+  "content": {
+    "scenes": [
+      {
+        "id": "brb-build",
+        "start": 0,
+        "end": 2.5,
+        "text": "BE RIGHT BACK",
+        "emphasis_words": [
+          "RIGHT",
+          "BACK"
+        ],
+        "emotion": "decisive but friendly interruption",
+        "motion": "Mechanical rail whip, reactive displacement, pause-bar stamp, and staggered block typography build the intermission state.",
+        "beats": [0.12, 0.48, 0.92, 1.46, 2.08, 2.5]
+      },
+      {
+        "id": "brb-breathe",
+        "start": 2.5,
+        "end": 6.55,
+        "text": "Taking a short break",
+        "emphasis_words": [
+          "short"
+        ],
+        "emotion": "relaxed pause with live energy",
+        "motion": "Headline holds while pause bars perform bounded compression-release pulses, rails make finite passes, and the marquee drifts.",
+        "beats": [3.8, 5.05, 6.25]
+      },
+      {
+        "id": "brb-resolve",
+        "start": 6.55,
+        "end": 8,
+        "text": "BE RIGHT BACK",
+        "emphasis_words": [
+          "BACK"
+        ],
+        "emotion": "controlled continuation",
+        "motion": "All mechanical paths reverse and typography folds to the opening edge state for an exact seamless reset.",
+        "beats": [6.72, 7.35, 8]
+      }
+    ]
+  }
+}

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 obs-quickstart — OBS configurator module.
 
@@ -32,12 +34,12 @@ def configure_obs_settings(obs, settings: dict) -> bool:
 
     try:
         obs.set_video_settings(
-            fps_numerator=fps_num,
-            fps_denominator=fps_den,
+            numerator=fps_num,
+            denominator=fps_den,
             base_width=base_w,
             base_height=base_h,
-            output_width=out_w,
-            output_height=out_h,
+            out_width=out_w,
+            out_height=out_h,
         )
         logger.info(f"Video: {base_w}x{base_h} → {out_w}x{out_h} @ {fps}fps")
     except Exception as e:
@@ -164,8 +166,8 @@ def configure_stream(obs, platform: str, stream_key: str,
         # We use SetStreamServiceSettings or SetProfileParameter
         try:
             obs.set_stream_service_settings(
-                type=service_type,
-                settings={
+                ss_type=service_type,
+                ss_settings={
                     "service": service_name,
                     "key": stream_key,
                     "server": server if server else "auto",
@@ -174,6 +176,7 @@ def configure_stream(obs, platform: str, stream_key: str,
             logger.info(f"Stream configured: {service_name}")
         except Exception as e:
             logger.warning(f"Failed to set stream service: {e}")
+            return False
 
     except Exception as e:
         logger.warning(f"Stream configuration failed: {e}")

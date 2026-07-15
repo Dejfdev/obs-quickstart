@@ -1,0 +1,146 @@
+{
+  "category": "kinetic-type",
+  "duration_s": 8,
+  "fps": 60,
+  "canvas": {
+    "w": 1920,
+    "h": 1080,
+    "aspect": "16:9"
+  },
+  "style": "Cinematic premium stream sign-off with editorial restraint: a dark navy night field, warm off-white typography, vivid lime trace details, and a coral setting-disc focal point. The energy settles rather than dies; elegant asymmetry and subtle broadcast metadata keep the frame alive and loopable.",
+  "palette": [
+    "#07111F",
+    "#F4F1E8",
+    "#B7F34A",
+    "#FF5C5C"
+  ],
+  "font": "IBM Plex Sans, Space Grotesk, Arial, sans-serif",
+  "beats": [0, 0.2, 0.68, 1.18, 1.86, 2.35, 2.8, 4.1, 5.4, 6.25, 6.7, 7.38, 8],
+  "export": "mp4",
+  "asset_needs": [],
+  "block": "caption-minimal-fade",
+  "customize": {
+    "copy": {
+      "headline": "STREAM ENDED",
+      "subheadline": "Thanks for watching",
+      "eyebrow": "SESSION COMPLETE / 03",
+      "status": "OFF AIR"
+    },
+    "layout": {
+      "safe_area": 72,
+      "headline_anchor": "left 150px, top 250px",
+      "headline_width": "58%",
+      "subheadline_anchor": "left 160px, top 620px",
+      "secondary_focal_point": "coral setting-disc and orbit arcs centered near x=1580, y=720",
+      "composition": "Upper-left typographic mass descends toward a lower-right coral horizon-disc; the diagonal eye path is reinforced by lime trajectory dots. Headline 142-166px, uppercase, weight 700-800; subheadline 40-48px with generous tracking."
+    },
+    "elements": [
+      {
+        "id": "end-star-grid",
+        "role": "background texture",
+        "look": "sparse deterministic lime/off-white pin grid across navy at 14-20% opacity"
+      },
+      {
+        "id": "end-navy-vignette",
+        "role": "background atmosphere",
+        "look": "localized deep-navy radial vignette, no full-screen linear gradient"
+      },
+      {
+        "id": "end-ghost-session",
+        "role": "midground depth",
+        "look": "cropped SESSION COMPLETE ghost type running vertically along right edge at 12% opacity"
+      },
+      {
+        "id": "end-eyebrow",
+        "role": "metadata lead-in",
+        "look": "lime SESSION COMPLETE / 03 with tiny square indicator"
+      },
+      {
+        "id": "end-headline",
+        "role": "primary focal point",
+        "look": "warm off-white hero text with ENDED outlined then filling solid"
+      },
+      {
+        "id": "end-subheadline",
+        "role": "gratitude focal support",
+        "look": "warm off-white sentence with watching underlined lime"
+      },
+      {
+        "id": "end-horizon-rule",
+        "role": "structural path",
+        "look": "long 2px off-white horizon rule crossing behind the setting disc"
+      },
+      {
+        "id": "end-coral-disc",
+        "role": "secondary focal point",
+        "look": "large coral disc half-submerged under the horizon, with navy occlusion"
+      },
+      {
+        "id": "end-orbit-arcs",
+        "role": "midground motion",
+        "look": "two incomplete lime elliptical arcs plus five fixed trajectory motes"
+      },
+      {
+        "id": "end-footer-data",
+        "role": "foreground metadata",
+        "look": "bottom-left OFF AIR coral chip, center session duration ticks, bottom-right THANK YOU / LOOP 08S"
+      }
+    ],
+    "motion_system": {
+      "dominant_motif": "Graceful de-energizing: elements descend, orbit, and settle across a horizon while the thank-you line remains warm and present.",
+      "rules": [
+        "depth-scatter-assemble",
+        "svg-path-draw",
+        "ambient-glow-bloom",
+        "sine-wave-loop"
+      ],
+      "blueprint": "kinetic-type-beats with a titlecard-reveal restraint modifier",
+      "build": "0.00-2.80s: deterministic pin lights assemble from shallow depth; horizon rule draws outward from the coral disc; STREAM rises in softly from below while ENDED glyphs tumble from small depth offsets and lock into an outline, then fill warm off-white; disc rises to its half-set position and orbit arcs draw around it.",
+      "breathe": "2.80-6.45s: headline and gratitude line stay readable; coral disc lowers only 26px as the arcs counter-rotate 8 degrees; five motes drift along short precomputed trajectories; lime underline draws under watching at 4.10s, then OFF AIR indicator gives one soft coral pulse at 5.40s.",
+      "resolve": "6.45-8.00s: disc and motes retrace upward to their initial below-horizon positions, orbit arcs un-draw to opening values, pin lights return to shallow scatter, and title glyphs separate to their opening offsets on a gentle stagger. The navy field and horizon seed match frame 0 for an invisible loop cut.",
+      "easing": "power2.out for type assembly, circ.out for disc rise, sine.inOut for orbital breathe, power2.inOut for the symmetrical loop reset",
+      "determinism": "Pin and glyph offsets are index-derived constants; every orbit and pulse is a finite tween on the paused master timeline; no clocks, random values, or infinite repeats."
+    },
+    "contrast": "Primary and secondary text use warm off-white on navy; lime supports emphasis and trajectories; coral is a large scenic mass and OFF AIR state, not small running text."
+  },
+  "content": {
+    "scenes": [
+      {
+        "id": "end-build",
+        "start": 0,
+        "end": 2.8,
+        "text": "STREAM ENDED",
+        "emphasis_words": [
+          "ENDED"
+        ],
+        "emotion": "satisfying closure",
+        "motion": "Depth-scattered glyphs settle into an editorial title while a horizon, coral disc, and orbital traces assemble diagonally across frame.",
+        "beats": [0.2, 0.68, 1.18, 1.86, 2.35, 2.8]
+      },
+      {
+        "id": "end-breathe",
+        "start": 2.8,
+        "end": 6.45,
+        "text": "Thanks for watching",
+        "emphasis_words": [
+          "watching"
+        ],
+        "emotion": "warm gratitude",
+        "motion": "A long readable hold with a slow setting-disc descent, counter-rotating arcs, trajectory motes, underline draw, and one restrained status pulse.",
+        "beats": [4.1, 5.4, 6.25]
+      },
+      {
+        "id": "end-resolve",
+        "start": 6.45,
+        "end": 8,
+        "text": "STREAM ENDED",
+        "emphasis_words": [
+          "ENDED"
+        ],
+        "emotion": "quiet reset",
+        "motion": "The horizon system and type choreography retrace to the opening scatter without a fade-to-black, preserving life across the loop boundary.",
+        "beats": [6.7, 7.38, 8]
+      }
+    ]
+  }
+}

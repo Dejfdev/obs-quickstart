@@ -21,3 +21,11 @@ Thumbs.db
 # OBS
 *.scene.json
 *.profile.json
+__pycache__/
+*.py[cod]
+.DS_Store
+.agents/
+skills-lock.json
+videos/*/node_modules/
+videos/*/snapshots/
+videos/*/.hyperframes/
