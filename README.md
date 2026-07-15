@@ -63,16 +63,16 @@
 
 **Windows:**
 ```batch
-git clone https://github.com/ak100kk/obs-quickstart-tmp.git
-cd obs-quickstart-tmp
+git clone https://github.com/Dejfdev/obs-quickstart.git
+cd obs-quickstart
 setup.bat
 python -m obs_quickstart.main
 ```
 
 **macOS / Linux:**
 ```bash
-git clone https://github.com/ak100kk/obs-quickstart-tmp.git
-cd obs-quickstart-tmp
+git clone https://github.com/Dejfdev/obs-quickstart.git
+cd obs-quickstart
 bash setup.sh
 python3 -m obs_quickstart.main
 ```
@@ -82,8 +82,8 @@ o hasło OBS. W trybie `--no-interactive` podaj je przez `--password`.
 
 **Albo ręcznie (dowolna platforma):**
 ```bash
-git clone https://github.com/ak100kk/obs-quickstart-tmp.git
-cd obs-quickstart-tmp
+git clone https://github.com/Dejfdev/obs-quickstart.git
+cd obs-quickstart
 pip install obsws-python
 pip install speedtest-cli   # opcjonalnie, dla testu łącza
 python3 -m obs_quickstart.main
@@ -189,8 +189,8 @@ Wszystkie operacje są wykonywane przez API — nie ma modyfikacji plików konfi
 ## 🧑‍💻 Rozwój
 
 ```bash
-git clone https://github.com/ak100kk/obs-quickstart-tmp.git
-cd obs-quickstart-tmp
+git clone https://github.com/Dejfdev/obs-quickstart.git
+cd obs-quickstart
 pip install -e .
 # Teraz 'obs-quickstart' jest dostępne jako komenda
 obs-quickstart
